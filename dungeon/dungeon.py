@@ -1,4 +1,5 @@
 import random
+import time
 
 def roll():
     return random.randint(1, 20)
@@ -75,17 +76,30 @@ class Character:
         print(f"INTEL           {self.intelligence}")
         print(f"CHARISMA        {self.charisma}")
 
+def narrate(name, line):
+    line = f"{name}: " + line
+    for i in range(len(line)-1):
+        print(line[0:i], end="\r")
+        time.sleep(0.01)
+    print(line[0:len(line)], end="\n")
+narrate("the spirit", "welcome to the void young adventurer")
+time.sleep(0.5)
+narrate("the spirit", "this is a land of many friends and foes.")
 
-#Test Character of type Seafolk and name lord gosling
-goose = Character(name="lord gosling", species="GEE")
-goose.displayCharacter()
-roll = roll()
-#Adjusting Attributes of Characters based on roll
-goose.speciesBoost(roll)
-goose.displayCharacter()
-#Reseting Character after the round
-goose.finishBoost(roll)
-goose.displayCharacter()
+#EXAMPLE CODE FROM 12/15/2022
+
+# #Test Character of type Seafolk and name lord gosling
+# goose = Character(name="lord gosling", species="GEE")
+# goose.displayCharacter()
+# roll = roll()
+# #Adjusting Attributes of Characters based on roll
+# goose.speciesBoost(roll)
+# goose.displayCharacter()
+# #Reseting Character after the round
+# goose.finishBoost(roll)
+# goose.displayCharacter()
+
+
 
 
 
