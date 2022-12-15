@@ -4,12 +4,12 @@ def roll():
     return random.randint(1, 20)
 
 class Character:
-    def __init__(self, name="unnamed", health=10):
+    def __init__(self, name="unnamed", health=10, species="HOM"):
         #BASIC INFO
         self.name = name
         self.health = health
         self.inventory = dict()
-        self.species = "HOM"
+        self.species = species
         self.mana = True
         #STATS
         self.strength = roll()
@@ -19,8 +19,6 @@ class Character:
         self.intelligence = roll()
         self.charisma = roll()
 
-    def __iter__(self):
-        return self
     #HEALTH MODIFIERS
     def Punch(self,  Character):
         Character.health -= int(max(self.strength, self.dexterity)/10)
@@ -47,9 +45,27 @@ class Character:
             self.strength += int(roll_number/5)
             self.health += int(self.vitality/10)
             self.dexterity -= int(roll_number/5)
+    
+    def finishBoost(self, roll_number):
+        if(self.species == "GEE"):
+            self.dexterity -= int(roll_number/5)
+            self.charisma -= int(roll_number/10)
+            self.strength += int(roll_number/10)
+            self.wisdom += int(roll_number/10)
+        if(self.species == "SEA"):
+            self.strength -= int(roll_number/5)
+            self.vitality -= int(roll_number/5)
+            self.dexterity += int(roll_number/10)
+            self.mana = False
+        if(self.species == "MON"):
+            self.strength -= int(roll_number/5)
+            self.health -= int(self.vitality/10)
+            self.dexterity += int(roll_number/5)
+
 
     #def applyEffect(s):
 
+    #INFO
     def displayCharacter(self):
         print(f"Hello, {self.name}. Here are your stats: ")
         print(f"STRENGTH        {self.strength}")
@@ -60,8 +76,21 @@ class Character:
         print(f"CHARISMA        {self.charisma}")
 
 
-goose = Character(name="lord gosling")
+#Test Character of type Seafolk and name lord gosling
+goose = Character(name="lord gosling", species="GEE")
 goose.displayCharacter()
+roll = roll()
+#Adjusting Attributes of Characters based on roll
+goose.speciesBoost(roll)
+goose.displayCharacter()
+#Reseting Character after the round
+goose.finishBoost(roll)
+goose.displayCharacter()
+
+
+
+
+
 
 
 
