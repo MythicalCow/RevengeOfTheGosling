@@ -1,5 +1,9 @@
 import random
 import time
+import keyboard
+import os
+
+
 
 def roll():
     return random.randint(1, 20)
@@ -76,28 +80,34 @@ class Character:
         print(f"INTEL           {self.intelligence}")
         print(f"CHARISMA        {self.charisma}")
 
-def narrate(name, line):
-    line = f"{name}: " + line
-    for i in range(len(line)-1):
-        print(line[0:i], end="\r")
-        time.sleep(0.01)
-    print(line[0:len(line)], end="\n")
-narrate("the spirit", "welcome to the void young adventurer")
-time.sleep(0.5)
-narrate("the spirit", "this is a land of many friends and foes.")
+def narrate(name, line, verbose=True):
+    os.system('cls' if os.name == 'nt' else 'clear')
+    temp = line
+    if verbose == True:
+        temp = f"{name}: " + line
+    print(temp)
 
-#EXAMPLE CODE FROM 12/15/2022
 
-# #Test Character of type Seafolk and name lord gosling
-# goose = Character(name="lord gosling", species="GEE")
-# goose.displayCharacter()
-# roll = roll()
-# #Adjusting Attributes of Characters based on roll
-# goose.speciesBoost(roll)
-# goose.displayCharacter()
-# #Reseting Character after the round
-# goose.finishBoost(roll)
-# goose.displayCharacter()
+
+print("welcome to revenge of the gosling")
+print("press the up button to start introduction. down to go to next screen")
+while keyboard.read_key() != "up": 
+    os.system('cls' if os.name == 'nt' else 'clear') 
+    print("press the up button to start introduction. down to go to next screen")
+f = open("introduction.txt")
+s = f.readlines()
+line = 1
+narrate("narrator", s[0], verbose=True)
+
+while(line < len(s)):
+    if(len(s[line]) > 5):
+        while keyboard.read_key() != "down": 
+            narrate("narrator", s[line-1], verbose=False)
+        narrate("narrator", s[line], verbose=False)
+        time.sleep(0.2)
+    line += 1
+
+
 
 
 
