@@ -1,120 +1,108 @@
-import random
-import time
-import keyboard
-import os
+# import pygame module in this program
+import pygame
+
+# activate the pygame library .
+# initiate pygame and give permission
+# to use pygame's functionality.
+pygame.init()
+
+# create the display surface object
+# of specific dimension..e(500, 500).
+width = 1200
+height = 800
+
+win = pygame.display.set_mode([width, height])
+
+# set the pygame window name
+pygame.display.set_caption("A Textbook Adventure")
+
+file = open("introduction.txt", "r")
+introduction = file.readlines()
+file.close()
+
+file = open("node1.txt", "r")
+node1txt = file.readlines()
+file.close()
 
 
 
-def roll():
-    return random.randint(1, 20)
+# Indicates pygame is running
+run = True
 
-class Character:
-    def __init__(self, name="unnamed", health=10, species="HOM"):
-        #BASIC INFO
-        self.name = name
-        self.health = health
-        self.inventory = dict()
-        self.species = species
-        self.mana = True
-        #STATS
-        self.strength = roll()
-        self.dexterity = roll()
-        self.vitality = roll()
-        self.wisdom = roll()
-        self.intelligence = roll()
-        self.charisma = roll()
-
-    #HEALTH MODIFIERS
-    def Punch(self,  Character):
-        Character.health -= int(max(self.strength, self.dexterity)/10)
-    def Rest(self):
-        self.health += int(self.vitality/3)
-
-    #SET SPECIES
-    def setSpecies(self, s):
-        self.species = s
-
-    #SPECIES BOOST
-    def speciesBoost(self, roll_number):
-        if(self.species == "GEE"):
-            self.dexterity += int(roll_number/5)
-            self.charisma += int(roll_number/10)
-            self.strength -= int(roll_number/10)
-            self.wisdom -= int(roll_number/10)
-        if(self.species == "SEA"):
-            self.strength += int(roll_number/5)
-            self.vitality += int(roll_number/5)
-            self.dexterity -= int(roll_number/10)
-            self.mana = False
-        if(self.species == "MON"):
-            self.strength += int(roll_number/5)
-            self.health += int(self.vitality/10)
-            self.dexterity -= int(roll_number/5)
-    
-    def finishBoost(self, roll_number):
-        if(self.species == "GEE"):
-            self.dexterity -= int(roll_number/5)
-            self.charisma -= int(roll_number/10)
-            self.strength += int(roll_number/10)
-            self.wisdom += int(roll_number/10)
-        if(self.species == "SEA"):
-            self.strength -= int(roll_number/5)
-            self.vitality -= int(roll_number/5)
-            self.dexterity += int(roll_number/10)
-            self.mana = False
-        if(self.species == "MON"):
-            self.strength -= int(roll_number/5)
-            self.health -= int(self.vitality/10)
-            self.dexterity += int(roll_number/5)
+intro_node = False
+first_node = False
 
 
-    #def applyEffect(s):
+my_font = pygame.font.SysFont('Raleway', 40, bold=True)
+text_surface = my_font.render("A Textbook Adventure", False, (255, 255, 255))
+text_rect = text_surface.get_rect(center=(width/2, height/2))
+win.blit(text_surface, text_rect)
 
-    #INFO
-    def displayCharacter(self):
-        print(f"Hello, {self.name}. Here are your stats: ")
-        print(f"STRENGTH        {self.strength}")
-        print(f"DEXTERITY       {self.dexterity}")
-        print(f"VITALITY        {self.vitality}")
-        print(f"WISDOM          {self.wisdom}")
-        print(f"INTEL           {self.intelligence}")
-        print(f"CHARISMA        {self.charisma}")
+my_font = pygame.font.SysFont('Raleway', 15, bold=True)
+text_surface = my_font.render("Press Down Arrow To Start", False, (255, 255, 255))
+text_rect = text_surface.get_rect(center=(width/2, height-40))
+win.blit(text_surface, text_rect)
 
-def narrate(name, line, verbose=True):
-    os.system('cls' if os.name == 'nt' else 'clear')
-    temp = line
-    if verbose == True:
-        temp = f"{name}: " + line
-    print(temp)
+while run:
+	# creates time delay of 10ms
+    pygame.time.delay(10)
+
+    for event in pygame.event.get():
+
+        if event.type == pygame.QUIT:
+            # it will make exit the while loop
+            run = False
+        # stores keys pressed
+        #elif event.type == pygame.KEYDOWN:
+        keys = pygame.key.get_pressed()
+
+                # if left arrow key is pressed
+
+        #INTRODUCTION KEYPRESSES
+        
+        if keys[pygame.K_DOWN] and intro_node == False:
+            intro_node = True
+            win.fill((0, 0, 0))
+            pygame.time.delay(500)
+
+
+        if keys[pygame.K_DOWN] and intro_node == True and len(introduction) > 0:
+            #print text on screen
+            win.fill((0, 0, 0))
+            my_font = pygame.font.SysFont('Times New Roman', 20)
+            text_surface = my_font.render(introduction[0], False, (255, 255, 255))
+            text_rect = text_surface.get_rect(center=(width/2, height/2))
+            win.blit(text_surface, text_rect)
+            introduction.pop(0)
+            pygame.time.delay(500)
+        
+        if len(introduction) == 0 and first_node != True:
+            intro_node = False
+            win.fill((0, 0, 0))
+            pygame.time.delay(500)
+            first_node = True
+
+            #INTRODUCTION KEYPRESSES
+
+
+        if keys[pygame.K_DOWN] and first_node==True and len(node1txt) > 0:
+            #print text on screen
+            win.fill((0, 0, 0))
+            my_font = pygame.font.SysFont('Times New Roman', 20)
+            text_surface = my_font.render(node1txt[0], False, (255, 255, 255))
+            text_rect = text_surface.get_rect(center=(width/2, height/2))
+            win.blit(text_surface, text_rect)
+            node1txt.pop(0)
+            pygame.time.delay(500)
+        
+        if len(node1txt) == 0:
+            first_node = False
+        
 
 
 
-print("welcome to revenge of the gosling")
-print("press the up button to start introduction. down to go to next screen")
-while keyboard.read_key() != "up": 
-    os.system('cls' if os.name == 'nt' else 'clear') 
-    print("press the up button to start introduction. down to go to next screen")
-f = open("introduction.txt")
-s = f.readlines()
-line = 1
-narrate("narrator", s[0], verbose=True)
+    # it refreshes the window
+    pygame.display.update()
 
-while(line < len(s)):
-    if(len(s[line]) > 5):
-        while keyboard.read_key() != "down": 
-            narrate("narrator", s[line-1], verbose=False)
-        narrate("narrator", s[line], verbose=False)
-        time.sleep(0.2)
-    line += 1
-
-
-
-
-
-
-
-
-
-
-
-
+# closes the pygame window
+pygame.quit()
